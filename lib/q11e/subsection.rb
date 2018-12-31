@@ -1,19 +1,36 @@
 class Subsection
-  attr_accessor :id, :default_next_subsection
+  attr_reader :id, :default_next_subsection, :questions
 
   def initialize(id)
-    @id = name
+    @id = id
     @questions = []
-    @subsections = []
   end
 
-  def make_page
-    @page = true
-  end
+  # def make_page
+  #   @page = true
+  # end
 
-  def new_subsection(id)
-    subsection = Subsection.define(id)
-    yield(subsection)
+  # def new_subsection(id)
+  #   subsection = Subsection.define(id)
+  #   yield(subsection)
+  # end
+
+  def add_question(id, type)
+    question = nil
+    case type
+    when :boolean
+      # byebug
+      question = Boolean.new(id)
+      # yield question
+    when :multiple_choice
+      question = MultipleChoice.new(id)
+      # yield question
+    else
+      raise Exception "No question type defined"
+    end
+    raise Exception "An error occured in defining the question" if question.nil?
+    yield question
+    questions << question
   end
 
   def set_default_next_subsection(next_subsection)
@@ -26,9 +43,9 @@ class Subsection
 
   def validate
     errors = []
-    errors << 'Subsection: Subsections can only have questions or connect to other subsections' if !questions.empty? && !subsections.empty?
+    errors << 'Subsection: Subsections can only have questions or connect to other subsections' if !questions.empty? # && !subsections.empty?
     questions_validate(errors) unless questions.empty?
-    subsections_validate(errors) unless subsections.empty?
+    # subsections_validate(errors) unless subsections.empty?
   end
 
   private
@@ -44,5 +61,6 @@ class Subsection
     subsections.each do |subsection|
       errors << subsection.validate
     end
+    errors
   end
 end

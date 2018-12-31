@@ -1,5 +1,5 @@
 class Section
-  attr_accessor :section_name, :type, :subsections
+  attr_reader :section_name, :type, :subsections
 
   def initialize(section_name, type)
     @section_name = section_name
@@ -7,8 +7,8 @@ class Section
     @subsections = []
   end
 
-  def make_subsection(subsection_name)
-    subsection = Subsection.define(subsection_name)
+  def add_subsection(subsection_name)
+    subsection = Subsection.new(subsection_name)
     yield(subsection)
     subsections << subsection
   end
@@ -21,11 +21,23 @@ class Section
     end
   end
 
+  def to_hash
+    hash = Hash.new
+    hash[:section_name] = @section_name
+    hash[:type] = @type
+    subsection_hash = Hash.new
+    subsections.each do |subsection|
+      subsection_hash[subsection.id] = subsection.id
+    end
+    hash[:subsections]  = subsection_hash
+    hash
+  end
+
   def validate
     errors = []
-    errors << 'Section: No section name present' unless section_name.present?
-    errors << 'Section: Incorrect section type' unless section.eql? :firm || section.eql? :personal
-    return false if section.empty?
+    errors << 'Section: No section name present' unless !section_name.empty?
+    # errors << 'Section: Incorrect section type' unless section.eql? :firm || section.eql? :personal
+    return false if subsections.empty?
     subsections.each do |subsection|
       errors << subsection.validate
     end

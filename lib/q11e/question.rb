@@ -1,5 +1,5 @@
-class Question
-  attr_accessor :question_id, :type
+module Question
+  attr_reader :question_id, :type
 
   def initialize(question_id)
     @question_id = question_id
@@ -15,7 +15,7 @@ class Question
       @question = MultipleChoice.new
       yield @question
     else
-      raise Excpetion "No question type defined"
+      raise Exception "No question type defined"
     end
   end
 

@@ -1,5 +1,5 @@
 class Questionaire
-  attr_accessor :name, :version, :starting_state, :ending_states
+  attr_accessor :name, :version, :starting_state, :ending_states, :sections
 
   def initialize(name, version)
     @name = name
@@ -17,16 +17,28 @@ class Questionaire
   end
 
   def make_section(section_name)
-    s = Section.define(section_name)
-    @sections.push s
-    yield(s)
+    section = Section.new(section_name)
+    yield section
+    sections << section
   end
 
   def pretty_print
     puts "Name: #{@name}"
     puts "Version: #{@version}"
-    @sections.each do |section|
+    sections.each do |section|
       section.pretty_print
     end
+  end
+
+  def validate
+    errors = []
+    return false if section.empty?
+    sections.each do |section|
+      errors << section.validate
+    end
+    errors.empty? ? true : print_errors(errors) && false
+  end
+
+  def print_errors(errors)
   end
 end

@@ -1,5 +1,5 @@
 class BaseQuestion
-  attr_accessor :id, :question_text
+  attr_accessor :id, :question_text, :more_info
 
   def initialize(question_id)
     @id = question_id

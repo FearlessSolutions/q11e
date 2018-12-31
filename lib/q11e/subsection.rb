@@ -1,24 +1,18 @@
 class Subsection
-  attr_accessor :name, :default_next_subsection
+  attr_accessor :id, :default_next_subsection
 
-  def initialize(name)
-    @name = name
+  def initialize(id)
+    @id = name
     @questions = []
     @subsections = []
-    @page = false
-  end
-
-  def self.define(name)
-    subsection = Subsection.new(name)
-    yield(subsection)
   end
 
   def make_page
     @page = true
   end
 
-  def new_subsection(name)
-    subsection = Subsection.define(name)
+  def new_subsection(id)
+    subsection = Subsection.define(id)
     yield(subsection)
   end
 
@@ -27,6 +21,28 @@ class Subsection
   end
 
   def pretty_print
-    puts "Subsection Name: #{@name}"
+    puts "Subsection ID: #{id}"
+  end
+
+  def validate
+    errors = []
+    errors << 'Subsection: Subsections can only have questions or connect to other subsections' if !questions.empty? && !subsections.empty?
+    questions_validate(errors) unless questions.empty?
+    subsections_validate(errors) unless subsections.empty?
+  end
+
+  private
+
+  def questions_validate(errors)
+    questions.each do |question|
+      errors << question.validate
+    end
+    errors
+  end
+
+  def subsections_validate(errors)
+    subsections.each do |subsection|
+      errors << subsection.validate
+    end
   end
 end

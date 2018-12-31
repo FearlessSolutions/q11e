@@ -8,6 +8,7 @@ module Question
     end
 
     def set_selection(text)
+      @selections.push text
     end
   end
 end

@@ -27,7 +27,7 @@ class Section
     hash[:type] = @type
     subsection_hash = Hash.new
     subsections.each do |subsection|
-      subsection_hash[subsection.id] = subsection.id
+      subsection_hash[subsection.id] = subsection.to_hash
     end
     hash[:subsections]  = subsection_hash
     hash

@@ -3,6 +3,7 @@ class BaseQuestion
 
   def initialize(question_id, type)
     @id = question_id
+    @type = type
   end
 
   def set_question_text(question_text)

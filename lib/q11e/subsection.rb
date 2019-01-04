@@ -48,6 +48,17 @@ class Subsection
     # subsections_validate(errors) unless subsections.empty?
   end
 
+  def to_hash
+    hash = Hash.new
+    hash[:subsection_id] = id
+    question_hash = Hash.new
+    questions.each do |question|
+      question_hash[question.id] = question.to_hash
+    end
+    hash[:questions]  = question_hash
+    hash
+  end
+
   private
 
   def questions_validate(errors)

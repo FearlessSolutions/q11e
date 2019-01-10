@@ -29,7 +29,7 @@ class Section
     subsections.each do |subsection|
       subsection_hash[subsection.id] = subsection.to_hash
     end
-    hash[:subsections]  = subsection_hash
+    hash[:subsections] = subsection_hash
     hash
   end
 

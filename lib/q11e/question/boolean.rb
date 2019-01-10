@@ -8,8 +8,8 @@ class Boolean < BaseQuestion
   end
 
   def set_options(option_1, option_2)
-    option_1 = option_1
-    option_2 = option_2
+    @option_1 = option_1
+    @option_2 = option_2
   end
 
   def to_hash
